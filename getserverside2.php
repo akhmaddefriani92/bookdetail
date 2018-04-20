@@ -87,7 +87,11 @@
     }    
     if ( isset($_POST['sSearch']) && $_POST['sSearch'] != "" )
     {
-        $sWhere .= "AND (";
+        if(empty($sWhere)){
+            $sWhere .= " where (";
+        }else{
+            $sWhere .= " AND (";
+        }    
         for ( $i=0 ; $i<count($aColumns) ; $i++ )
         {
             if ( isset($_POST['bSearchable_'.$i]) && $_POST['bSearchable_'.$i] == "true" )
@@ -128,7 +132,7 @@
         $sOrder
         $sLimit
     ";
-    $rResult = mysql_query( $sQuery, $dbhandle ) or fatal_error( 'MySQL Error: ' . mysql_errno() );
+    $rResult = mysql_query( $sQuery, $dbhandle ) or die( $sQuery.'MySQL Error: ' . mysql_error() );
      
     /* Data set length after filtering */
     $sQuery = "
